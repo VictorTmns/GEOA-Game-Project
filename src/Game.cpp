@@ -193,8 +193,14 @@ void Game::CleanupGameEngine()
 
 void Game::Update(float elapsedSec)
 {
+	m_Player.Update(elapsedSec);
 }
 
 void Game::Draw() const
 {
+	glClearColor(0, 0, 0, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	
+	m_Player.Draw();
 }

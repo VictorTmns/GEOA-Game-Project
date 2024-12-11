@@ -3,6 +3,8 @@
 #include "SDL.h"
 #include "SDL_opengl.h"
 
+#include "GameFiles/Player.h"
+
 class Game
 {
 public:
@@ -39,7 +41,9 @@ public:
 	}
 	void ProcessMouseUpEvent(const SDL_MouseButtonEvent& e)
 	{
-		
+
+
+
 	}
 
 	const Rectf& GetViewPort() const
@@ -60,6 +64,10 @@ private:
 	bool m_Initialized;
 	// Prevent timing jumps when debugging
 	const float m_MaxElapsedSeconds;
+
+
+	// PROJECT
+	Player m_Player;
 	
 	// FUNCTIONS
 	void InitializeGameEngine( );

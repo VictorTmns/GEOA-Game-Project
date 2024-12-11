@@ -6,11 +6,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project("GEOAProject")
 
 # Add source files
-add_executable(GEOAProject "FlyFish.cpp" "Game.cpp" "structs.cpp" "utils.cpp" "main.cpp")
+file(GLOB_RECURSE SRC_FILES
+    "FlyFish.cpp" "Game.cpp" "structs.cpp" "utils.cpp" "main.cpp"  # Main folder .cpp files
+    "${CMAKE_CURRENT_SOURCE_DIR}/GameFiles/*.cpp"  # Subdirectory .cpp files
+)
+
+add_executable(GEOAProject ${SRC_FILES})
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
     set_property(TARGET GEOAProject PROPERTY CXX_STANDARD 20)
 endif()
+
+# Include directories
+target_include_directories(GEOAProject PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}"  # Main folder headers
+    "${CMAKE_CURRENT_SOURCE_DIR}/Subdirectory"  # Subdirectory headers
+)
 
 # Simple Directmedia Layer
 set(SDL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Libraries/SDL2-2.30.9")
@@ -38,6 +49,7 @@ endif()
 
 target_link_libraries(GEOAProject PRIVATE SDL SDL_TTF opengl32)
 
+# Copy DLLs after build
 file(GLOB_RECURSE DLL_FILES
     "${SDL_DIR}/lib/*.dll"
     "${SDL_DIR}/lib/*.manifest"
