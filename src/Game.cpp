@@ -15,6 +15,7 @@ Game::Game(const Window& window)
 	, m_pContext{ nullptr }
 	, m_Initialized{ false }
 	, m_MaxElapsedSeconds{ 0.1f }
+	, m_Player{ window.width, window.height }
 {
 	InitializeGameEngine();
 }

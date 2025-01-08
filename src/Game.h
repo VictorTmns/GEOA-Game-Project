@@ -37,6 +37,15 @@ public:
 	}
 	void ProcessMouseDownEvent(const SDL_MouseButtonEvent& e)
 	{
+		switch (e.button)
+		{
+		case SDL_BUTTON_LEFT:
+			{
+			m_Player.SetNewTargetPoint(e.x, e.y);
+			}
+
+		default: ;
+		}
 		
 	}
 	void ProcessMouseUpEvent(const SDL_MouseButtonEvent& e)
