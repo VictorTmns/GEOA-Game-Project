@@ -1,32 +1,29 @@
 #pragma once
 #include "FlyFish.h"
-#include "structs.h"
+#include "PGAstructs.h"
+
 
 class Player
 {
 public:
-	Player(float screenWidth, float ScreenHeight);
-
-	~Player() = default;
+	Player(const PGAPoint2f& leftBottom, float screenWidth, float screenHeight);
 
 	void Update(float elapsedSec);
 	void Draw() const;
 
+	bool IsOverlapping(const PGACirclef& circle) const;
 
-	void SetNewTargetPoint(int x, int y);
-	void UpdateMovementDir();
-	bool IsInsideBounds(const Rectf& bounds);
-
+	PGARectf GetBounds() const { return m_Bounds; };
 private:
 	const float m_ScreenWidth;
 	const float m_ScreenHeight;
+	const float m_BulletRadius;
 
-private:
-	ThreeBlade m_LeftBottom;
-	ThreeBlade m_TargetPoint;
+	PGARectf m_Bounds;
+	PGAPoint2f m_TargetPoint;
 	TwoBlade m_MovementDir;
 
 
-	void Move(float elapsedSec);
-	void Rotate(float elapsedSec);
+	void SetNewTargetPoint(int x, int y);
+	void UpdateMovementDir();
 };

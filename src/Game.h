@@ -2,8 +2,7 @@
 #include "structs.h"
 #include "SDL.h"
 #include "SDL_opengl.h"
-
-#include "GameFiles/Player.h"
+#include "GameFiles/Pong.h"
 
 class Game
 {
@@ -41,7 +40,7 @@ public:
 		{
 		case SDL_BUTTON_LEFT:
 			{
-			m_Player.SetNewTargetPoint(e.x, e.y);
+			//m_Player.SetNewTargetPoint(e.x, e.y);
 			}
 
 		default: ;
@@ -76,7 +75,7 @@ private:
 
 
 	// PROJECT
-	Player m_Player;
+	Pong m_Pong;
 	
 	// FUNCTIONS
 	void InitializeGameEngine( );

@@ -3,8 +3,8 @@
 #include <ctime>
 #include "Game.h"
 
-constexpr int SCREEN_WIDTH = 1280.f;
-constexpr int SCREEN_HEIGHT = 720.f;
+constexpr int SCREEN_WIDTH = 700;
+constexpr int SCREEN_HEIGHT = 900;
 
 int main(int argv, char** args)
 {

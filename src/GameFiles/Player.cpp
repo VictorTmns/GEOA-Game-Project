@@ -1,57 +1,53 @@
-#include "Player.h"
-
-#include <iostream>
-
 #include "PGAUtils.h"
+#include "player.h"
+#include "SDL_keyboard.h"
+#include "structs.h"
 #include "utils.h"
 
-Player::Player(float screenWidth, float screenHeight)
-	: m_LeftBottom{200, 200, 0, 1}
-	, m_TargetPoint{500, 500, 0}
-	, m_ScreenWidth{screenWidth}
-	, m_ScreenHeight{screenHeight}
-	, m_MovementDir{ ThreeBlade{ m_ScreenWidth / 2,  m_ScreenHeight / 2, 0 } & m_TargetPoint }
+
+Player::Player(const PGAPoint2f& leftBottom, float screenWidth, float screenHeight)
+	: m_ScreenWidth{0}
+	, m_ScreenHeight{0}
+	, m_BulletRadius{0}
+	, m_Bounds{ leftBottom, 80, 20}
 {
-
 }
-
-void Player::Move(float elapsedSec)
-{
-	Motor translator{ Motor::Translation(50 * elapsedSec, !m_MovementDir) };
-
-	m_LeftBottom = (translator * m_LeftBottom * ~translator).Grade3();
-}
-
-void Player::Rotate(float elapsedSec)
-{
-	TwoBlade rotatingLine{ TwoBlade::LineFromPoints(m_TargetPoint[0], m_TargetPoint[1], m_TargetPoint[2],
-		m_TargetPoint[0], m_TargetPoint[1], m_TargetPoint[2]+1 )};
-
-	Motor rotator{ Motor::Rotation(100*elapsedSec, rotatingLine) };
-
-
-	m_LeftBottom = (rotator * m_LeftBottom * ~rotator).Grade3();
-}
-
-
 
 void Player::Update(float elapsedSec)
 {
-	Move(elapsedSec);
-	//Rotate(elapsedSec);
-	if (PGAUtils::PointInsideRect(m_LeftBottom, Rectf{0.f, 0.f, m_ScreenWidth, m_ScreenHeight}))
-		std::cout << "inside \n";
-	else
-		std::cout << "outside \n";
+	TwoBlade mover{};
+
+	const Uint8* state = SDL_GetKeyboardState(nullptr);
+	if (state[SDL_SCANCODE_W]) {
+		mover.e31() = 1;
+	}
+	if (state[SDL_SCANCODE_S]) {
+		mover.e31() = -1;
+	}
+	if (state[SDL_SCANCODE_D]) {
+		mover.e23() = 1;
+	}
+	if (state[SDL_SCANCODE_A]) {
+		mover.e23() = -1;
+	}
+
+	if (abs(mover.Norm()) <= FLT_EPSILON)
+		return;
+	Motor translator{ Motor::Translation(500 * elapsedSec, !mover) };
+
+	m_Bounds.leftBottom = (translator * m_Bounds.leftBottom * ~translator).Grade3();
 }
+
 
 void Player::Draw() const
 {
-	utils::SetColor(Color4f{ 0, 0, 255, 255 });
-	utils::FillRect(m_LeftBottom[0], m_LeftBottom[1], 20, 20);
-
 	utils::SetColor(Color4f{ 255, 0, 0, 255 });
-	utils::FillEllipse(m_TargetPoint[0], m_TargetPoint[1], 10, 10);
+	utils::FillRect(m_Bounds.leftBottom.x(), m_Bounds.leftBottom.y(), m_Bounds.width, m_Bounds.height);
+}
+
+bool Player::IsOverlapping(const PGACirclef& circle) const
+{
+	return PGAUtils::IsOverlapping(m_Bounds, circle);
 }
 
 void Player::SetNewTargetPoint(int x, int y)
@@ -63,6 +59,5 @@ void Player::SetNewTargetPoint(int x, int y)
 
 void Player::UpdateMovementDir()
 {
-	m_MovementDir = ThreeBlade{ m_ScreenWidth / 2,  m_ScreenHeight / 2, 0 } &m_TargetPoint;
+	m_MovementDir = ThreeBlade{ m_ScreenWidth / 2,  m_ScreenHeight / 2, m_TargetPoint.z() } &m_TargetPoint;
 }
-

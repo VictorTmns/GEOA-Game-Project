@@ -11,7 +11,7 @@ file(GLOB_RECURSE SRC_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/GameFiles/*.cpp"  # Subdirectory .cpp files
 )
 
-add_executable(GEOAProject ${SRC_FILES} "PGAUtils.h" "PGAUtils.cpp")
+add_executable(GEOAProject ${SRC_FILES} "PGAUtils.h" "PGAUtils.cpp" "GameFiles/Player.h" "GameFiles/Player.cpp" "GameFiles/BallManager.h" "GameFiles/BallManager.cpp" "GameFiles/Pong.h" "GameFiles/Pong.cpp" "PGAStructs.cpp" "GameFiles/Block.h" "GameFiles/Block.cpp" "GameFiles/BlockManager.h" "GameFiles/BlockManager.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
     set_property(TARGET GEOAProject PROPERTY CXX_STANDARD 20)

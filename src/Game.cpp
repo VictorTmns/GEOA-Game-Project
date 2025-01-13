@@ -15,7 +15,7 @@ Game::Game(const Window& window)
 	, m_pContext{ nullptr }
 	, m_Initialized{ false }
 	, m_MaxElapsedSeconds{ 0.1f }
-	, m_Player{ window.width, window.height }
+	, m_Pong{m_Viewport}
 {
 	InitializeGameEngine();
 }
@@ -194,7 +194,8 @@ void Game::CleanupGameEngine()
 
 void Game::Update(float elapsedSec)
 {
-	m_Player.Update(elapsedSec);
+	m_Pong.Update(elapsedSec);
+
 }
 
 void Game::Draw() const
@@ -202,6 +203,5 @@ void Game::Draw() const
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	
-	m_Player.Draw();
+	m_Pong.Draw();
 }
