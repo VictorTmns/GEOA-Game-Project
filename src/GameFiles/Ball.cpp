@@ -13,6 +13,7 @@ Ball::Ball(const PGAPoint2f& startPos, TwoBlade startVelocity, float screenWidth
 	  , m_ScreenHeight{screenHeight}
 	  , m_MovementDir{std::move(startVelocity)}
 {
+	m_MovementDir.Normalize();
 }
 
 
@@ -53,12 +54,14 @@ void Ball::ReflectOnScreenEdge()
 	if (PGAUtils::Distance(m_Bounds.center, OneBlade{ -m_Bounds.radius, 1, 0, 0 }) < 0)
 	{
 		m_MovementDir = PGAUtils::Reflect(m_MovementDir, OneBlade{ 0, 1, 0, 0 });
+		m_MovementDir.Normalize();
 		m_Bounds.center.x() = m_Bounds.radius + 0.1f;
 	}
 
 	if (PGAUtils::Distance(m_Bounds.center, OneBlade{ 0 + m_ScreenWidth - m_Bounds.radius, -1, 0, 0 }) < 0)
 	{
 		m_MovementDir = PGAUtils::Reflect(m_MovementDir, OneBlade{ 0, -1, 0, 0 });
+		m_MovementDir.Normalize();
 		m_Bounds.center.x() = m_ScreenWidth - m_Bounds.radius - 0.1f;
 	}
 
@@ -66,6 +69,7 @@ void Ball::ReflectOnScreenEdge()
 	if (PGAUtils::Distance(m_Bounds.center, OneBlade{ 0 + m_ScreenHeight - m_Bounds.radius, 0, -1, 0 }) < 0)
 	{
 		m_MovementDir = PGAUtils::Reflect(m_MovementDir, OneBlade{ 0, 0, -1, 0 });
+		m_MovementDir.Normalize();
 		m_Bounds.center.y() =  m_ScreenHeight - m_Bounds.radius - 0.1f;
 	}
 }
@@ -78,8 +82,10 @@ void Ball::CheckPlayerCollision(const Player& player)
 	PGAPoint2f playerReflectionPoint{ player.GetBounds().leftBottom };
 	playerReflectionPoint.x() += player.GetBounds().width / 2.f;
 	playerReflectionPoint.y() += player.GetBounds().height / 2.f;
+	playerReflectionPoint.z() = 0;
 
 	m_MovementDir = playerReflectionPoint.position.Normalized() & m_Bounds.center.position.Normalized();
+	m_MovementDir.Normalize();
 }
 
 
@@ -93,6 +99,7 @@ void Ball::HandleBlockCollision(const PGARectf& block)
 	OneBlade reflectionPlane{ CalculateReflectionPlane(block)};
 
 	m_MovementDir = PGAUtils::Reflect(m_MovementDir, reflectionPlane);
+	m_MovementDir.Normalize();
 }
 
 OneBlade Ball::CalculateReflectionPlane(const PGARectf& block) const
