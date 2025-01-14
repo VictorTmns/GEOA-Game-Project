@@ -39,10 +39,15 @@ public:
 		switch (e.button)
 		{
 		case SDL_BUTTON_LEFT:
-			{
-			//m_Player.SetNewTargetPoint(e.x, e.y);
-			}
-
+		{
+			m_Pong.LeftMouseClick(e.x, e.y);
+			break;
+		}
+		case SDL_BUTTON_RIGHT:
+		{
+			m_Pong.RightMouseClick(e.x, e.y);
+			break;
+		}
 		default: ;
 		}
 		

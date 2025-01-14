@@ -11,6 +11,9 @@ public:
 	void Update(float elapsedSec);
 	void Draw() const;
 
+	void LeftMouseClick(float x, float y);
+	void RightMouseClick(float x, float y);
+
 private:
 	Player m_Player;
 	BallManager m_BallManager;

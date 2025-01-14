@@ -1,6 +1,7 @@
 #include "BallManager.h"
 
 #include <algorithm>
+#include <iostream>
 
 #include "SDL_keyboard.h"
 
@@ -19,13 +20,6 @@ void BallManager::AddBall(const PGAPoint2f& startPos, const TwoBlade& startVeloc
 
 void BallManager::Update(float elapsedSec, const Player& player, BlockManager& blockManager)
 {
-	const Uint8* state = SDL_GetKeyboardState(nullptr);
-	if (state[SDL_SCANCODE_SPACE])
-	{
-		AddBall(PGAPoint2f{ 30.f, 30.f }, TwoBlade{ 0, 0, 0, float(std::rand() % 20) - 10, 10, 0.f });
-	}
-
-
 	std::erase_if(m_Balls, [](auto& ball)
 		{return !ball->IsAlive();});
 
@@ -35,6 +29,21 @@ void BallManager::Update(float elapsedSec, const Player& player, BlockManager& b
 
 	std::ranges::for_each(m_Balls, [&blockManager](auto& ball)
 		{blockManager.DoCollisions(*ball); });
+
+	if (m_Balls.size() == 0)
+	{
+
+		m_NrOfLivesUsed++;
+		std::cout << "you have already used " << m_NrOfLivesUsed << ", you can do better \n";
+
+		AddBall(
+			PGAPoint2f{
+				player.GetBounds().leftBottom.x() + player.GetBounds().width/2,
+				player.GetBounds().leftBottom.y() + player.GetBounds().height + 30
+			},
+			TwoBlade{ 0, 0, 0, float(std::rand() % 20) - 10, 10, 0.f });
+	}
+
 }
 
 void BallManager::Draw() const

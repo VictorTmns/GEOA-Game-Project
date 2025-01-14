@@ -7,8 +7,8 @@
 class BlockManager
 {
 public:
-	BlockManager();
-	void AddBlock(const PGAPoint2f& startPos);
+	BlockManager(float screenWidth, float screenHeight);
+	void AddBlock(float x, float y, float width, float height);
 
 	void DoCollisions(Ball& ball);
 

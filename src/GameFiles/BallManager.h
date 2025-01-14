@@ -22,6 +22,7 @@ private:
 	const float m_ScreenWidth;
 	const float m_ScreenHeight;
 
+	int m_NrOfLivesUsed = 0;
 
 	std::list<std::unique_ptr<Ball>> m_Balls;
 };

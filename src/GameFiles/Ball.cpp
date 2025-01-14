@@ -33,9 +33,6 @@ void Ball::Draw() const
 {
 	utils::SetColor(Color4f{ 0, 0, 255, 255 });
 	utils::FillEllipse(m_Bounds.center.x(), m_Bounds.center.y(), m_Bounds.radius, m_Bounds.radius);
-
-	//utils::SetColor(Color4f{ 255, 0, 0, 255 });
-	//utils::FillEllipse(m_TargetPoint[0], m_TargetPoint[1], 10, 10);
 }
 
 
@@ -44,20 +41,11 @@ void Ball::Draw() const
 
 void Ball::Move(float elapsedSec)
 {
-	Motor translator{ Motor::Translation(500 * elapsedSec, !m_MovementDir) };
+	Motor translator{ Motor::Translation(200 * elapsedSec, !m_MovementDir) };
 	m_Bounds.center = (translator * m_Bounds.center * ~translator).Grade3();
 }
 
-//void Ball::Rotate(float elapsedSec)
-//{
-//	TwoBlade rotatingLine{ TwoBlade::LineFromPoints(m_TargetPoint[0], m_TargetPoint[1], m_TargetPoint[2],
-//		m_TargetPoint[0], m_TargetPoint[1], m_TargetPoint[2]+1 )};
-//
-//	Motor rotator{ Motor::Rotation(100*elapsedSec, rotatingLine) };
-//
-//
-//	m_LeftBottom = (rotator * m_LeftBottom * ~rotator).Grade3();
-//}
+
 
 
 void Ball::ReflectOnScreenEdge()
