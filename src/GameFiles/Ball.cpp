@@ -1,10 +1,6 @@
 #include "Ball.h"
-
-#include <iostream>
-
 #include "PGAUtils.h"
 #include "Player.h"
-#include "SDL_stdinc.h"
 #include "utils.h"
 
 Ball::Ball(const PGAPoint2f& startPos, TwoBlade startVelocity, float screenWidth, float screenHeight)
@@ -113,13 +109,13 @@ OneBlade Ball::CalculateReflectionPlane(const PGARectf& block) const
 	ThreeBlade rotP4 { block.leftBottom.x() + block.width, block.leftBottom.y() + block.height, 0 };
 	ThreeBlade rotP44{ block.leftBottom.x() + block.width, block.leftBottom.y() + block.height, 1 };
 
-
+	// the axises(lines) to rotate our planes over
    	TwoBlade rotL1{ rotP1 & rotP11};
 	TwoBlade rotL2{ rotP2 & rotP22};
 	TwoBlade rotL3{ rotP3 & rotP33};
 	TwoBlade rotL4{ rotP4 & rotP44};
 
-
+	// the planes that make up our rectangle
 	OneBlade leftPlane	{ block.leftBottom.x()					,-1 , 0 , 0 };
 	OneBlade rightPlane	{ -(block.leftBottom.x() + block.width)	, 1 , 0 , 0 };
 	OneBlade bottomPlane{ block.leftBottom.y()					, 0 ,-1 , 0 };
@@ -151,12 +147,6 @@ OneBlade Ball::CalculateReflectionPlane(const PGARectf& block) const
 	OneBlade pl4{ (rotator * topPlane * ~rotator).Grade1() };
 
 
-	float d1{ PGAUtils::Distance(m_Bounds.center, pl1) };
-	float d2{ PGAUtils::Distance(m_Bounds.center, pl2) };
-	float d3{ PGAUtils::Distance(m_Bounds.center, pl3) };
-	float d4{ PGAUtils::Distance(m_Bounds.center, pl4) };
-
-
 	if (PGAUtils::IsInFront(pl1, m_Bounds.center) && PGAUtils::IsInFront(pl2, m_Bounds.center))
 		return bottomPlane;
 
@@ -168,8 +158,4 @@ OneBlade Ball::CalculateReflectionPlane(const PGARectf& block) const
 
 	if (PGAUtils::IsInFront(pl3, m_Bounds.center) && PGAUtils::IsInFront(pl4, m_Bounds.center))
 		return topPlane;
-
-
-
-	std::cout << "error in reflectionPlane searching for ball and block collision";
 }

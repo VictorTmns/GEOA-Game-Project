@@ -15,6 +15,6 @@ public:
 	static float Distance(const PGAPoint2f& point, const OneBlade& plane);
 
 
-	static TwoBlade Reflect(const TwoBlade& object, const OneBlade& reflectionPlane);
+	static TwoBlade Reflect(const TwoBlade& line, const OneBlade& reflectionPlane);
 
 };

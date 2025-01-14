@@ -50,13 +50,13 @@ float PGAUtils::Distance(const PGAPoint2f& point, const OneBlade& plane)
 	return point.position.Normalized()&plane.Normalized();
 }
 
-TwoBlade PGAUtils::Reflect(const TwoBlade& object, const OneBlade& reflectionPlane)
+TwoBlade PGAUtils::Reflect(const TwoBlade& line, const OneBlade& reflectionPlane)
 {
 	OneBlade refPlaneNormalize{ reflectionPlane.Normalized() };
-	TwoBlade objectNormalized{ object.Normalized() };
+	TwoBlade lineNormalized{ line.Normalized() };
 
-	const Motor projection{ (objectNormalized | refPlaneNormalize) * refPlaneNormalize };
-	const Motor rejection{ (objectNormalized ^ refPlaneNormalize) * refPlaneNormalize };
+	const Motor projection{ (lineNormalized | refPlaneNormalize) * refPlaneNormalize };
+	const Motor rejection{ (lineNormalized ^ refPlaneNormalize) * refPlaneNormalize };
 
 	const Motor reflection{ projection - rejection };
 
