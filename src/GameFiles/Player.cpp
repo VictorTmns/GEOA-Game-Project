@@ -66,7 +66,7 @@ void Player::Draw() const
 	//target
 	utils::SetColor(Color4f{ 1, 1, 1, 1 });
 	utils::FillEllipse(m_TargetPoint.x(), m_TargetPoint.y(), 5, 5);
-	utils::SetColor(Color4f{ 0.2f, 0.2f, 0.2f, 0.2f });
+	utils::SetColor(Color4f{ 0.2f, 0.2f, 0.2f, 1 });
 	utils::FillEllipse(m_OtherTarget.x(), m_OtherTarget.y(), 5, 5);
 	//screendivider
 	utils::SetColor(Color4f{ 1, 0, 1, 1 });
